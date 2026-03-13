@@ -1,6 +1,6 @@
-﻿namespace ProductCQRS.Model
+﻿namespace ProductCQRS.Profiles
 {
-    public class Product
+    public class ProductViewProfile
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -9,7 +9,5 @@
         public Guid CategoryId { get; set; }
         public int Discount { get; set; }
         public int Quantity { get; set; }
-
-        
     }
 }
