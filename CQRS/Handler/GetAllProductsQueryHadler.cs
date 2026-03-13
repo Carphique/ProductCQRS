@@ -12,9 +12,10 @@ namespace ProductCQRS.CQRS.Handler
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
-        public GetAllProductsQueryHadler(AppDbContext appDbContext)
+        public GetAllProductsQueryHadler(AppDbContext appDbContext, IMapper mapper)
         {
             _appDbContext = appDbContext;
+            _mapper = mapper;
         }
         //public async Task<List<ProductDTO>> Handle(GetAllProductsQueryRequest request, CancellationToken)
         //{

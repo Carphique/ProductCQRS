@@ -1,4 +1,6 @@
 
+using ProductCQRS.Profiles;
+
 namespace ProductCQRS
 {
     public class Program
@@ -12,6 +14,9 @@ namespace ProductCQRS
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddAutoMapper(typeof(ProductMapper));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
             var app = builder.Build();
 

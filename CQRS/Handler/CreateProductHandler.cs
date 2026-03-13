@@ -33,9 +33,11 @@ namespace ProductCQRS.CQRS.Handler
                 Name = request.Name,
                 Code = request.Code,
                 CategoryId = request.CategoryId,
-                Price = (decimal?)request.Price,
+                Price = request.Price,
                 Quantity = request.Quantity,
+                Discount = request.Discount
             };
+
             _appDbContext.Products.Add(product);
             await _appDbContext.SaveChangesAsync();
             var result = _mapper.Map<ProductViewProfile>(product);
