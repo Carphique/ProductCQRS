@@ -2,6 +2,7 @@
 using MediatR;
 using ProductCQRS.Model;
 using ProductCQRS.Profiles;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductCQRS.CQRS.Command
 {
@@ -13,6 +14,8 @@ namespace ProductCQRS.CQRS.Command
         public Guid CategoryId { get; set; }
         public int Discount { get; set; }
         public int Quantity { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
     }
 
     public class CreateProductValidator : AbstractValidator<CreateProductCommandRequest>

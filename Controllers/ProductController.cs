@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ProductCQRS.CQRS.Command;
 using ProductCQRS.CQRS.Query;
+using ProductCQRS.Profiles;
 
 namespace ProductCQRS.Controllers
 {
@@ -10,10 +12,22 @@ namespace ProductCQRS.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly AppSettingsProfile _appSettings;
 
-        public ProductController(IMediator mediator)
+        public ProductController(IMediator mediator, IOptions<AppSettingsProfile> options)
         {
             _mediator = mediator;
+            _appSettings = options.Value;
+            
+        }
+
+        [HttpGet("config")]
+        public ActionResult GetConfig() {
+            return Ok(new
+            {
+                AppName = _appSettings.ApplicationName,
+                MaxProduts = _appSettings.MaxProductsPerPage,
+            });
         }
 
         [HttpGet("all")]

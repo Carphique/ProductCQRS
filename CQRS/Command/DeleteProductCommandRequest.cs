@@ -1,15 +1,15 @@
-﻿using MediatR;
-using ProductCQRS.Model;
+﻿    using MediatR;
+    using ProductCQRS.Model;
 
-namespace ProductCQRS.CQRS.Command
-{
-    public class DeleteProductCommandRequest : IRequest<Result<bool>>
+    namespace ProductCQRS.CQRS.Command
     {
-        public Guid Id { get; set; }
-
-        public DeleteProductCommandRequest(Guid id)
+        public class DeleteProductCommandRequest : IRequest<Result<bool>>
         {
-            Id = id;
+            public Guid Id { get; set; }
+
+            public DeleteProductCommandRequest(Guid id)
+            {
+                Id = id;
+            }
         }
     }
-}
