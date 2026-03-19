@@ -12,25 +12,29 @@ namespace ProductCQRS.CQRS.Handler
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
-        private readonly ILogger _loger;
-        public CreateProductHandler(AppDbContext appDbContext, IMapper mapper, ILogger loger)
+        private readonly ILogger<CreateProductHandler> _logger;
+
+        public CreateProductHandler(
+            AppDbContext appDbContext,
+            IMapper mapper,
+            ILogger<CreateProductHandler> logger)
         {
             _appDbContext = appDbContext;
             _mapper = mapper;
-            _loger = loger;
+            _logger = logger;
         }
 
         public async Task<Result<ProductViewProfile>> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Creating product with code: {Code}", request.Code);
+
             var exist = await _appDbContext.Products
-                .AnyAsync(x => x.Code == request.Code, 
-                cancellationToken);
-            _loger.LogInformation("Creating product...");
+                .AnyAsync(x => x.Code == request.Code, cancellationToken);
 
             if (exist)
             {
-                _loger.LogError($"Product {request.Name} already exists");
-                
+                _logger.LogError("Product with code {Code} already exists", request.Code);
+
                 return Result<ProductViewProfile>
                     .Fail("Product with this code exists");
             }
@@ -46,23 +50,13 @@ namespace ProductCQRS.CQRS.Handler
             };
 
             _appDbContext.Products.Add(product);
-            await _appDbContext.SaveChangesAsync();
+            await _appDbContext.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Product saved to database: {Id}", product.Id);
+
             var result = _mapper.Map<ProductViewProfile>(product);
+
             return Result<ProductViewProfile>.Success(result, "Product created successfully");
-
-            throw new NotImplementedException();
         }
-
-        //public async Task<Guid> Handle(CreateProductCommand request)
-        //{
-        //    var product = new Product
-        //    {
-        //        Name = request.Name,
-        //        Price = request.Price,
-        //    };
-        //    _appDbContext.Products.Add(product);
-        //    await _appDbContext.SaveChangesAsync();
-        //    return product.Id;
-        //}
     }
 }
